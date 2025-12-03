@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,7 +8,8 @@ export const supabase = createClient(
 
 // Використання токена Clerk для RLS на edge/API route
 export async function supabaseWithAuth() {
-  const token = await auth().getToken({ template: "supabase" });
+  const { getToken } = await auth();
+  const token = await getToken({ template: "supabase" });
 
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
