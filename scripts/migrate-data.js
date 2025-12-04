@@ -1,9 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
+import fs from 'fs';
+import path from 'path';
+import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
 
 // Load environment variables
-require('dotenv').config({ path: '.env' });
+config({ path: '.env' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -500,8 +501,8 @@ async function migrateAll() {
 }
 
 // Run migration if this file is executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   migrateAll();
 }
 
-module.exports = { migrateAll };
+export { migrateAll };
